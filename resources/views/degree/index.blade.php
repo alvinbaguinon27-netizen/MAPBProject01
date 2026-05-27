@@ -1,17 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="panel">
-        <div class="panel-header">
-            <div>
-                <p class="eyebrow">Admin Management</p>
-                <h1>Degrees</h1>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+                <div>
+                    <p class="text-uppercase text-primary small fw-semibold mb-2">Admin Management</p>
+                    <h2 class="h1 mb-0">Degrees</h2>
+                </div>
+                <a href="{{ route('degree.create') }}" class="btn btn-primary">Add Degree</a>
             </div>
-            <a href="{{ route('degree.create') }}" class="btn">Add Degree</a>
-        </div>
 
-        <div class="table-wrap">
-            <table>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -24,25 +25,28 @@
                         <tr>
                             <td>{{ $degree->degree_title }}</td>
                             <td>{{ $degree->created_at?->format('M d, Y') }}</td>
-                            <td class="actions">
-                                <a href="{{ route('degree.show', $degree) }}">View</a>
-                                <a href="{{ route('degree.edit', $degree) }}">Edit</a>
-                                <form method="POST" action="{{ route('degree.destroy', $degree) }}">
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                <a href="{{ route('degree.show', $degree) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                                <a href="{{ route('degree.edit', $degree) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <form method="POST" action="{{ route('degree.destroy', $degree) }}" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-link danger" onclick="return confirm('Delete this degree?')">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this degree?')">Delete</button>
                                 </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="empty-state">No degrees found.</td>
+                            <td colspan="3" class="text-center text-secondary">No degrees found.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        {{ $degrees->links() }}
-    </section>
+        <div class="mt-3">{{ $degrees->links() }}</div>
+        </div>
+    </div>
 @endsection

@@ -1,24 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="panel">
-        <div class="panel-header">
-            <div>
-                <p class="eyebrow">Teacher Record</p>
-                <h1>{{ $teacher->full_name }}</h1>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+                <div>
+                    <p class="text-uppercase text-primary small fw-semibold mb-2">Teacher Record</p>
+                    <h2 class="h1 mb-0">{{ $teacher->full_name }}</h2>
+                </div>
+                <a href="{{ route('teacher.edit', $teacher) }}" class="btn btn-primary">Edit</a>
             </div>
-            <a href="{{ route('teacher.edit', $teacher) }}" class="btn">Edit</a>
-        </div>
 
-        <div class="detail-grid">
-            <article class="detail-card">
-                <dl class="detail-list">
-                    <div><dt>Email</dt><dd>{{ $teacher->email }}</dd></div>
-                    <div><dt>Username</dt><dd>{{ $teacher->userAccount?->username }}</dd></div>
-                    <div><dt>Contact</dt><dd>{{ $teacher->contactno }}</dd></div>
-                    <div><dt>Role</dt><dd>{{ ucfirst($teacher->userAccount?->role ?? 'teacher') }}</dd></div>
-                </dl>
-            </article>
+            <div class="row g-3">
+                <div class="col-md-6"><div class="card"><div class="card-body"><strong>Email:</strong> {{ $teacher->email }}</div></div></div>
+                <div class="col-md-6"><div class="card"><div class="card-body"><strong>Username:</strong> {{ $teacher->userAccount?->username }}</div></div></div>
+                <div class="col-md-6"><div class="card"><div class="card-body"><strong>Contact:</strong> {{ $teacher->contactno }}</div></div></div>
+                <div class="col-md-6"><div class="card"><div class="card-body"><strong>Role:</strong> {{ ucfirst($teacher->userAccount?->role ?? 'teacher') }}</div></div></div>
+            </div>
         </div>
-    </section>
+    </div>
 @endsection

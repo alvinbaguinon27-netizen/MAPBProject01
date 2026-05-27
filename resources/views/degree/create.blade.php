@@ -1,18 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="panel narrow">
-        <div class="panel-header">
-            <div>
-                <p class="eyebrow">Admin Management</p>
-                <h1>Create Degree</h1>
-            </div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <p class="text-uppercase text-primary small fw-semibold mb-2">Admin Management</p>
+            <h2 class="h1 mb-4">Create Degree</h2>
+            @include('degree.partials.form', [
+                'action' => route('degree.store'),
+                'degree' => null,
+                'buttonText' => 'Create Degree'
+            ])
         </div>
-
-        @include('degree.partials.form', [
-            'action' => route('degree.store'),
-            'degree' => null,
-            'buttonText' => 'Create Degree'
-        ])
-    </section>
+    </div>
 @endsection

@@ -1,5 +1,5 @@
-<div class="table-wrap">
-    <table>
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
         <thead>
             <tr>
                 <th>Name</th>
@@ -18,23 +18,24 @@
                     <td>{{ $student->userAccount?->username }}</td>
                     <td>{{ $student->degree?->degree_title ?? 'Not assigned' }}</td>
                     <td>{{ $student->contactno }}</td>
-                    <td class="actions">
-                        <a href="{{ route('student.show', $student) }}">View</a>
-                        <a href="{{ route('student.edit', $student) }}">Edit</a>
-                        <button type="button" class="btn-link danger delete-student-btn" data-id="{{ $student->id }}">
+                    <td>
+                        <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ route('student.show', $student) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                        <a href="{{ route('student.edit', $student) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <button type="button" class="btn btn-sm btn-outline-danger delete-student-btn" data-id="{{ $student->id }}">
                             Delete
                         </button>
+                        </div>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="empty-state">No students found.</td>
+                    <td colspan="6" class="text-center text-secondary">No students found.</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 </div>
-
-<div class="pagination-wrap">
+<div class="mt-3">
     {{ $students->links() }}
 </div>

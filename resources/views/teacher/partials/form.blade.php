@@ -1,43 +1,43 @@
-<form method="POST" action="{{ $action }}" class="form-grid two-column">
+<form method="POST" action="{{ $action }}" class="row g-3">
     @csrf
     @if($teacher)
         @method('PUT')
     @endif
 
-    <div>
-        <label for="fname">First Name</label>
-        <input id="fname" name="fname" type="text" value="{{ old('fname', $teacher?->fname) }}" required>
+    <div class="col-md-6">
+        <label for="fname" class="form-label">First Name</label>
+        <input id="fname" name="fname" type="text" class="form-control" value="{{ old('fname', $teacher?->fname) }}" required>
     </div>
-    <div>
-        <label for="mname">Middle Name</label>
-        <input id="mname" name="mname" type="text" value="{{ old('mname', $teacher?->mname) }}">
+    <div class="col-md-6">
+        <label for="mname" class="form-label">Middle Name</label>
+        <input id="mname" name="mname" type="text" class="form-control" value="{{ old('mname', $teacher?->mname) }}">
     </div>
-    <div>
-        <label for="lname">Last Name</label>
-        <input id="lname" name="lname" type="text" value="{{ old('lname', $teacher?->lname) }}" required>
+    <div class="col-md-6">
+        <label for="lname" class="form-label">Last Name</label>
+        <input id="lname" name="lname" type="text" class="form-control" value="{{ old('lname', $teacher?->lname) }}" required>
     </div>
-    <div>
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" value="{{ old('email', $teacher?->email) }}" required>
+    <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" name="email" type="email" class="form-control" value="{{ old('email', $teacher?->email) }}" required>
     </div>
-    <div>
-        <label for="contactno">Contact Number</label>
-        <input id="contactno" name="contactno" type="text" value="{{ old('contactno', $teacher?->contactno) }}" required>
+    <div class="col-md-6">
+        <label for="contactno" class="form-label">Contact Number</label>
+        <input id="contactno" name="contactno" type="text" class="form-control" value="{{ old('contactno', $teacher?->contactno) }}" required>
     </div>
-    <div>
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text" value="{{ old('username', $teacher?->userAccount?->username) }}" required>
+    <div class="col-md-6">
+        <label for="username" class="form-label">Username</label>
+        <input id="username" name="username" type="text" class="form-control" value="{{ old('username', $teacher?->userAccount?->username) }}" required>
     </div>
-    <div>
-        <label for="password">Password {{ $teacher ? '(Leave blank to keep current)' : '' }}</label>
-        <input id="password" name="password" type="password" {{ $teacher ? '' : 'required' }}>
+    <div class="col-md-6">
+        <label for="password" class="form-label">Password {{ $teacher ? '(Leave blank to keep current)' : '' }}</label>
+        <input id="password" name="password" type="password" class="form-control" {{ $teacher ? '' : 'required' }}>
     </div>
-    <div>
-        <label for="password_confirmation">Confirm Password</label>
-        <input id="password_confirmation" name="password_confirmation" type="password" {{ $teacher ? '' : 'required' }}>
+    <div class="col-md-6">
+        <label for="password_confirmation" class="form-label">Confirm Password</label>
+        <input id="password_confirmation" name="password_confirmation" type="password" class="form-control" {{ $teacher ? '' : 'required' }}>
     </div>
 
-    <div class="full-width">
-        <button type="submit" class="btn">{{ $buttonText }}</button>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
     </div>
 </form>
