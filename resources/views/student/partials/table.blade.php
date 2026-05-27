@@ -20,11 +20,13 @@
                     <td>{{ $student->contactno }}</td>
                     <td>
                         <div class="d-flex flex-wrap gap-2">
-                        <a href="{{ route('student.show', $student) }}" class="btn btn-sm btn-outline-secondary">View</a>
-                        <a href="{{ route('student.edit', $student) }}" class="btn btn-sm btn-outline-primary">Edit</a>
-                        <button type="button" class="btn btn-sm btn-outline-danger delete-student-btn" data-id="{{ $student->id }}">
-                            Delete
-                        </button>
+                            <a href="{{ route('student.show', $student) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                            <a href="{{ route('student.edit', $student) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <form method="POST" action="{{ route('student.destroy', $student) }}" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this student?')">Delete</button>
+                            </form>
                         </div>
                     </td>
                 </tr>

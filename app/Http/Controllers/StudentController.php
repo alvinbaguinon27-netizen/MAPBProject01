@@ -7,26 +7,18 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class StudentController extends Controller
 {
-    public function index(Request $request)
+    public function index(): View
     {
         $students = Student::query()
             ->with(['degree', 'userAccount'])
             ->latest()
             ->paginate(10);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'html' => view('student.partials.table', compact('students'))->render(),
-                'students' => $students,
-            ]);
-        }
 
         return view('student.index', compact('students'));
     }
@@ -38,9 +30,9 @@ class StudentController extends Controller
         return view('student.create', compact('degrees'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $validator = Validator::make($request->all(), [
+        $data = $request->validate([
             'fname' => ['required', 'string', 'max:255'],
             'mname' => ['nullable', 'string', 'max:255'],
             'lname' => ['required', 'string', 'max:255'],
@@ -56,16 +48,7 @@ class StudentController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $data = $validator->validated();
-
-        $student = DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data): void {
             $account = \App\Models\UserAccounts::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
@@ -75,7 +58,7 @@ class StudentController extends Controller
                 'must_change_password' => true,
             ]);
 
-            return Student::create([
+            Student::create([
                 'fname' => $data['fname'],
                 'mname' => $data['mname'] ?? null,
                 'lname' => $data['lname'],
@@ -86,11 +69,7 @@ class StudentController extends Controller
             ]);
         });
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Student created successfully.',
-            'student' => $student->load(['degree', 'userAccount']),
-        ]);
+        return redirect()->route('student.index')->with('success', 'Student created successfully.');
     }
 
     public function show(Student $student): View
@@ -108,11 +87,11 @@ class StudentController extends Controller
         return view('student.edit', compact('student', 'degrees'));
     }
 
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Student $student): RedirectResponse
     {
         $student->load('userAccount');
 
-        $validator = Validator::make($request->all(), [
+        $data = $request->validate([
             'fname' => ['required', 'string', 'max:255'],
             'mname' => ['nullable', 'string', 'max:255'],
             'lname' => ['required', 'string', 'max:255'],
@@ -133,15 +112,6 @@ class StudentController extends Controller
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $data = $validator->validated();
-
         DB::transaction(function () use ($data, $student): void {
             $student->userAccount?->update(array_filter([
                 'username' => $data['username'],
@@ -160,14 +130,10 @@ class StudentController extends Controller
             ]);
         });
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Student updated successfully.',
-            'student' => $student->fresh(['degree', 'userAccount']),
-        ]);
+        return redirect()->route('student.index')->with('success', 'Student updated successfully.');
     }
 
-    public function destroy(Request $request, Student $student)
+    public function destroy(Student $student): RedirectResponse
     {
         DB::transaction(function () use ($student): void {
             $account = $student->userAccount;
@@ -176,9 +142,6 @@ class StudentController extends Controller
             $account?->delete();
         });
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Student deleted successfully.',
-        ]);
+        return redirect()->route('student.index')->with('success', 'Student deleted successfully.');
     }
 }
